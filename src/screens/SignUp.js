@@ -7,7 +7,7 @@ import { Wrapper } from "../components/auth/Wrapper";
 import PageTitle from "../components/PageTitle";
 import FormError from "../components/auth/FormError";
 import { Input } from "../components/auth/Input";
-import { Header } from "../components/auth/Header";
+import { TitleHeader } from "../components/auth/TitleHeader";
 import FormBox from "../components/auth/FormBox";
 import { Button } from "../components/auth/Button";
 import { useHistory } from "react-router";
@@ -92,10 +92,10 @@ function SignUp() {
   return (
     <Wrapper>
       <PageTitle title="Sign Up | Nomad Coffee" />
-      <Header>
+      <TitleHeader>
         <H1>Nomad Coffee</H1>
         <FontAwesomeIcon icon={faCoffee} />
-      </Header>
+      </TitleHeader>
       <FormBox>
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <FormError message={errors?.username?.message} />
@@ -106,7 +106,10 @@ function SignUp() {
           <Input
             {...register("username", {
               required: "Username is required",
-              minLength: 4,
+              minLength: {
+                value: 4,
+                message: "Username should be longer than 4 chars",
+              },
             })}
             onFocus={clearLoginError}
             type="text"
@@ -125,11 +128,14 @@ function SignUp() {
           <Input
             {...register("password", {
               required: "Password is required",
-              minLength: 5,
+              minLength: {
+                value: 5,
+                message: "Password should be longer than 5 chars",
+              },
             })}
             onFocus={clearLoginError}
             type="password"
-            placeholder="Password (At least 5 characters)"
+            placeholder="Password"
             hasError={Boolean(errors?.password?.message)}
           />
           <Input

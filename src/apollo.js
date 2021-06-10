@@ -11,6 +11,7 @@ const DARK_MODE = "DARK_MODE";
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
 export const darkModeVar = makeVar(Boolean(localStorage.getItem(DARK_MODE)));
+export const editVar = makeVar(false);
 
 export const logUserIn = (token) => {
   localStorage.setItem(TOKEN, token);
@@ -47,13 +48,14 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     //The way of saving on cache.
     typePolicies: {
       User: {
-        keyFields: (obj) => `User:${obj.userName}`,
+        keyFields: (obj) => `User:${obj.username}`,
       },
     },
   }),

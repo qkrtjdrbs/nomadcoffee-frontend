@@ -11,7 +11,7 @@ import FormError from "../components/auth/FormError";
 import { Link } from "react-router-dom";
 import { routes } from "../routes";
 import { Input } from "../components/auth/Input";
-import { Header } from "../components/auth/Header";
+import { TitleHeader } from "../components/auth/TitleHeader";
 import FormBox from "../components/auth/FormBox";
 import { Button } from "../components/auth/Button";
 
@@ -97,22 +97,25 @@ function Login() {
   return (
     <Wrapper>
       <PageTitle title="Login | Nomad Coffee" />
-      <Header>
-        <H1>Nomad Coffee</H1>
-        <FontAwesomeIcon icon={faCoffee} />
-      </Header>
+      <TitleHeader>
+        <Link to={routes.home}>
+          <H1>Nomad Coffee</H1>
+          <FontAwesomeIcon icon={faCoffee} />
+        </Link>
+      </TitleHeader>
       <FormBox>
         <form onSubmit={handleSubmit(onSubmitValid)}>
           {location?.state?.message ? (
             <SignUpNotification>{location?.state?.message}</SignUpNotification>
           ) : null}
-          <FormError message={errors?.username?.message} />
-          <FormError message={errors?.password?.message} />
           <FormError message={errors?.result?.message} />
           <Input
             {...register("username", {
               required: "Username is required",
-              minLength: 4,
+              minLength: {
+                value: 4,
+                message: "Username should be longer than 4 chars",
+              },
             })}
             onFocus={clearLoginError}
             type="text"
@@ -120,7 +123,13 @@ function Login() {
             hasError={Boolean(errors?.username?.message)}
           />
           <Input
-            {...register("password", { required: "Password is required" })}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 5,
+                message: "Password should be longer than 5 chars",
+              },
+            })}
             onFocus={clearLoginError}
             type="password"
             placeholder="Password"

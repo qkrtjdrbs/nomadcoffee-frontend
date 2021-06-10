@@ -20,7 +20,7 @@ export const GlobalStyles = createGlobalStyle`
     body {
       a {
         text-decoration: none;
-        color: ${(props) => props.theme.accent};
+        color: black;
       }
     }
 `;
