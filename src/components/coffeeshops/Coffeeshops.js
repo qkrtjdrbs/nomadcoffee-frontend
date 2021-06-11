@@ -32,6 +32,10 @@ const PhotoFile = styled.img`
   width: 100%;
 `;
 
+const Photo = styled.div`
+  margin: 10px;
+`;
+
 function CoffeeShops({ id, name, user, photos, categories }) {
   return (
     <Content key={id}>
@@ -48,12 +52,12 @@ function CoffeeShops({ id, name, user, photos, categories }) {
           <FontAwesomeIcon icon={faCoffee} />
           <Name>{name}</Name>
         </Link>
-        <div>
+        <Photo>
           {photos?.map((photo) => (
-            <PhotoFile src={photo.url} />
+            <PhotoFile key={photo.id} src={photo.url} />
           ))}
           Categories: {categories?.map((c) => c.slug + " ")}{" "}
-        </div>
+        </Photo>
       </ContentPhoto>
     </Content>
   );

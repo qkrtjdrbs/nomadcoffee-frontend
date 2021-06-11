@@ -10,11 +10,12 @@ import { Input } from "../components/auth/Input";
 import { TitleHeader } from "../components/auth/TitleHeader";
 import FormBox from "../components/auth/FormBox";
 import { Button } from "../components/auth/Button";
-import { isLoggedInVar } from "../apollo";
+import { isLoggedInVar, uploadVar } from "../apollo";
 import Login from "./Login";
 import { useHistory } from "react-router";
 import { routes } from "../routes";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const CREATE_COFFEESHOP_MUTATION = gql`
   mutation createCoffeeShop(
@@ -41,6 +42,10 @@ const H1 = styled.h1`
   font-weight: 600;
   font-size: 25px;
   margin-bottom: 15px;
+`;
+
+const Img = styled.img`
+  width: 100%;
 `;
 
 function Add() {
@@ -93,6 +98,7 @@ function Add() {
       }
     );
   };
+
   const onSubmitValid = (data) => {
     if (loading) {
       return;
@@ -103,8 +109,8 @@ function Add() {
         let longitude = position.coords.longitude;
         latitude = String(latitude);
         longitude = String(longitude);
-        let { name, categories, photo: files } = getValues();
-        console.log(files);
+        let { name, categories, photo } = getValues();
+        console.log(photo);
         categories = categories.split(",");
         createCoffeeShop({
           variables: {
@@ -112,6 +118,7 @@ function Add() {
             latitude,
             longitude,
             categories,
+            files: photo,
           },
         });
       },
@@ -122,9 +129,20 @@ function Add() {
       }
     );
   };
-
   const clearLoginError = () => {
     clearErrors("result");
+  };
+
+  const [preview, setPreview] = useState(null);
+  const isUploaded = useReactiveVar(uploadVar);
+  const onUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setPreview(reader.result);
+      uploadVar(true);
+    };
   };
   return isLoggedIn ? (
     <Wrapper>
@@ -161,8 +179,9 @@ function Add() {
             onFocus={clearLoginError}
             type="file"
             multiple
-            hasError={Boolean(errors?.photo?.message)}
+            onChange={onUpload}
           />
+          {isUploaded ? <Img alt="preview" src={preview} /> : null}
           <Button type="submit" disabled={!formState.isValid || loading}>
             {loading ? "Loading..." : "Create Coffee Shop"}
           </Button>

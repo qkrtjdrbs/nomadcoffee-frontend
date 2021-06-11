@@ -16,6 +16,10 @@ const SEE_COFFEE_SHOP_QUERY = gql`
       name
       latitude
       longitude
+      photos {
+        id
+        url
+      }
       user {
         id
         username

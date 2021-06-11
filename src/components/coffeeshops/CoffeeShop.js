@@ -49,6 +49,7 @@ const DelBtn = styled.button`
   border: none;
   position: absolute;
   right: 10px;
+  top: 13px;
   font-size: 20px;
   padding: 5px;
   border-radius: 10px;
@@ -56,6 +57,11 @@ const DelBtn = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const Img = styled.img`
+  margin-top: 20px;
+  width: 100%;
 `;
 
 const DELETE_COFFEESHOP_MUTATION = gql`
@@ -67,7 +73,7 @@ const DELETE_COFFEESHOP_MUTATION = gql`
   }
 `;
 
-function CoffeeShop({ id, name, user, categories, isMine }) {
+function CoffeeShop({ id, name, user, categories, photos, isMine }) {
   const clickEdit = useReactiveVar(editVar);
   const history = useHistory();
   const updateDeleteCoffeeShop = (cache, result) => {
@@ -108,6 +114,9 @@ function CoffeeShop({ id, name, user, categories, isMine }) {
         <DelBtn onClick={onDelete}>{isMine ? "❌" : null}</DelBtn>
         <FontAwesomeIcon icon={faCoffee} />
         <Name>{name}</Name>
+        {photos?.map((photo) => (
+          <Img key={photo.id} src={photo.url} />
+        ))}
         <div>Categories: {categories?.map((c) => c.slug + " ")} </div>
         {clickEdit ? <EditForm /> : null}
       </ContentPhoto>

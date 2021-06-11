@@ -1,10 +1,6 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  makeVar,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
 
 const TOKEN = "token";
 const DARK_MODE = "DARK_MODE";
@@ -12,6 +8,7 @@ const DARK_MODE = "DARK_MODE";
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
 export const darkModeVar = makeVar(Boolean(localStorage.getItem(DARK_MODE)));
 export const editVar = makeVar(false);
+export const uploadVar = makeVar(false);
 
 export const logUserIn = (token) => {
   localStorage.setItem(TOKEN, token);
@@ -35,7 +32,8 @@ export const disableDarkMode = () => {
   darkModeVar(false);
 };
 
-const httpLink = createHttpLink({
+//for file uploading
+const httpLink = createUploadLink({
   uri: "http://localhost:4000/graphql",
 });
 //send token to http headers
