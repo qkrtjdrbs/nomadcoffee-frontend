@@ -110,7 +110,6 @@ function Add() {
         latitude = String(latitude);
         longitude = String(longitude);
         let { name, categories, photo } = getValues();
-        console.log(photo);
         categories = categories.split(",");
         createCoffeeShop({
           variables: {

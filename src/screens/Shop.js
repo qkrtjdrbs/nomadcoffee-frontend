@@ -62,9 +62,7 @@ function Shop() {
           <Notification>{location?.state?.message}</Notification>
         ) : null}
         <Contents>
-          {data?.seeCoffeeShop ? (
-            <CoffeeShop id={id} {...data.seeCoffeeShop} />
-          ) : null}
+          {data?.seeCoffeeShop ? <CoffeeShop {...data.seeCoffeeShop} /> : null}
         </Contents>
       </Wrapper>
     </>
