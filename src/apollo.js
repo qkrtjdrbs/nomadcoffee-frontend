@@ -1,4 +1,10 @@
-import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloLink,
+  createHttpLink,
+  InMemoryCache,
+  makeVar,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 
@@ -33,12 +39,20 @@ export const disableDarkMode = () => {
 };
 
 //for file uploading
-const httpLink = createUploadLink({
+const uploadLink = createUploadLink({
   uri:
     process.env.NODE_ENV === "production"
       ? "https://nomadcoffee-backend-psk.herokuapp.com/graphql"
       : "http://localhost:4000/graphql",
 });
+
+const httpLink = createHttpLink({
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "https://nomadcoffee-backend-psk.herokuapp.com/graphql"
+      : "http://localhost:4000/graphql",
+});
+
 //send token to http headers
 const authLink = setContext((_, { headers }) => {
   return {
@@ -51,7 +65,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([authLink, uploadLink]),
   cache: new InMemoryCache({
     //The way of saving on cache.
     typePolicies: {
