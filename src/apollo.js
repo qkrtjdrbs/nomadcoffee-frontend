@@ -65,7 +65,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([authLink, uploadLink]),
+  link: ApolloLink.from([authLink, httpLink, uploadLink]),
   cache: new InMemoryCache({
     //The way of saving on cache.
     typePolicies: {
