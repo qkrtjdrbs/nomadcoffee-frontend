@@ -52,6 +52,7 @@ function Shop() {
       id,
     },
   });
+  console.log(data);
   return (
     <>
       <Header />
