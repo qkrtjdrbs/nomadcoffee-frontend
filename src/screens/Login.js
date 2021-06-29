@@ -125,10 +125,6 @@ function Login() {
           <Input
             {...register("password", {
               required: "Password is required",
-              minLength: {
-                value: 5,
-                message: "Password should be longer than 5 chars",
-              },
             })}
             onFocus={clearLoginError}
             type="password"

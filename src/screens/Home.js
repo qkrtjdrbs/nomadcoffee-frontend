@@ -9,8 +9,8 @@ import Header from "../components/Header";
 import PageTitle from "../components/PageTitle";
 
 const SEE_COFFEE_SHOPS_QUERY = gql`
-  query seeCoffeeShops($lastId: Int) {
-    seeCoffeeShops(lastId: $lastId) {
+  query seeCoffeeShops($offset: Int!) {
+    seeCoffeeShops(offset: $offset) {
       id
       name
       latitude
@@ -36,6 +36,9 @@ function Home() {
   const history = useHistory();
   const { data } = useQuery(SEE_COFFEE_SHOPS_QUERY, {
     fetchPolicy: "no-cache",
+    variables: {
+      offset: 4,
+    },
   });
   return (
     <>

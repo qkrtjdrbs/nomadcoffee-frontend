@@ -52,7 +52,6 @@ function Shop() {
       id,
     },
   });
-  console.log(data);
   return (
     <>
       <Header />
@@ -63,7 +62,7 @@ function Shop() {
           <Notification>{location?.state?.message}</Notification>
         ) : null}
         <Contents>
-          {data?.seeCoffeeShop ? <CoffeeShop {...data.seeCoffeeShop} /> : null}
+          {data?.seeCoffeeShop ? <CoffeeShop {...data?.seeCoffeeShop} /> : null}
         </Contents>
       </Wrapper>
     </>

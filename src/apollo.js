@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 import { createUploadLink } from "apollo-upload-client";
 
 const TOKEN = "token";
@@ -55,6 +56,11 @@ export const client = new ApolloClient({
   cache: new InMemoryCache({
     //The way of saving on cache.
     typePolicies: {
+      Query: {
+        fields: {
+          seeCoffeeShops: offsetLimitPagination(),
+        },
+      },
       User: {
         keyFields: (obj) => `User:${obj.username}`,
       },
