@@ -51,6 +51,7 @@ const Img = styled.img`
 function Add() {
   const history = useHistory();
   const isLoggedIn = useReactiveVar(isLoggedInVar);
+  const [files, setFiles] = useState([]);
   const {
     register,
     handleSubmit,
@@ -109,15 +110,16 @@ function Add() {
         let longitude = position.coords.longitude;
         latitude = String(latitude);
         longitude = String(longitude);
-        let { name, categories, photo } = getValues();
+        let { name, categories } = getValues();
         categories = categories.split(",");
+        console.log(files);
         createCoffeeShop({
           variables: {
             name,
             latitude,
             longitude,
             categories,
-            files: photo,
+            files,
           },
         });
       },
@@ -135,6 +137,7 @@ function Add() {
   const [preview, setPreview] = useState(null);
   const isUploaded = useReactiveVar(uploadVar);
   const onUpload = (e) => {
+    setFiles(e.target.files);
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
