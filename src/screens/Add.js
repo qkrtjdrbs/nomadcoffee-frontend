@@ -17,6 +17,14 @@ import { routes } from "../routes";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+const UPOAD_PHOTO = gql`
+  mutation uploadPhoto($files: [Upload]) {
+    uploadPhoto(files: $files) {
+      url
+    }
+  }
+`;
+
 const CREATE_COFFEESHOP_MUTATION = gql`
   mutation createCoffeeShop(
     $name: String!
@@ -82,6 +90,8 @@ function Add() {
       onCompleted,
     }
   );
+
+  const [uploadPhotoMutation] = useMutation(UPOAD_PHOTO);
   const getMyLocation = () => {
     let longitude = null,
       latitude = null;
@@ -136,9 +146,18 @@ function Add() {
 
   const [preview, setPreview] = useState(null);
   const isUploaded = useReactiveVar(uploadVar);
-  const onUpload = (e) => {
+  const onUpload = async (e) => {
     setFiles(e.target.files);
+    const files = e.target.files;
     const file = e.target.files[0];
+    if (files && files.length >= 1) {
+      const {
+        data: {
+          uploadPhoto: { url },
+        },
+      } = await uploadPhotoMutation({ variables: { files } });
+      console.log(url);
+    }
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
