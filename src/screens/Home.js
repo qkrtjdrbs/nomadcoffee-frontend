@@ -37,7 +37,7 @@ function Home() {
   const { data } = useQuery(SEE_COFFEE_SHOPS_QUERY, {
     fetchPolicy: "no-cache",
     variables: {
-      offset: 4,
+      offset: 0,
     },
   });
   return (
